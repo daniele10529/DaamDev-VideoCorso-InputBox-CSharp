@@ -1,0 +1,214 @@
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace InputBox
+{
+
+    /// <summary>
+    /// Oggetto Enum InputBoxImage per la selezione dell'immagine nell'InputBox
+    /// </summary>
+    public enum InputBoxImage
+    {
+        /// <summary>
+        /// Icona con le nuvolette di messaggio
+        /// </summary>
+        Message,
+        /// <summary>
+        /// Icona con punto interrogativo
+        /// </summary>
+        Question,
+        /// <summary>
+        /// Icona con lucchetto chiuso
+        /// </summary>
+        Secret
+    }
+
+    public partial class InputBox : Form
+    {
+
+        #region Getter and Setter
+
+        /// <summary>
+        /// Getter con la risposta dell'InputBox
+        /// </summary>
+        public string Answer { get; private set; }
+
+        /// <summary>
+        /// Getter statico con la risposta dell'InputBox
+        /// visualizzaziondo il dialog attraverso il metodo statico ShowDialog
+        /// </summary>
+        public static string AnswerResult { get; private set; }
+
+        #endregion
+
+        #region Costruttori
+
+        /// <summary>
+        /// InputBox for c# language
+        /// </summary>
+        public InputBox()
+        {
+            InitializeComponent();
+        }
+
+        /// <summary>
+        /// Custom InputBox per C# language
+        /// </summary>
+        /// <param name="caption">Intestazione dell'InputBox</param>
+        /// <param name="message">Messaggio dell'InputBox</param>
+        /// <param name="password">Occulta l'inserimento di una password</param>
+        public InputBox(string caption, string message, bool password = false)
+        {
+            InitializeComponent();
+
+            //Assegna il testo alla caption dell'InputBox
+            Text = caption;
+            //Assegna il messaggio dell'InputBox
+            lblMesssage.Text = message;
+
+            //Setta il password char della TextBox in caso di inserimento della password
+            if (password) txtQuestion.PasswordChar = true;
+        }
+
+        /// <summary>
+        /// Custom InputBox per C# language
+        /// </summary>
+        /// <param name="caption">Intestazione dell'InputBox</param>
+        /// <param name="message">Messaggio dell'InputBox</param>
+        /// <param name="image">Icona dell'InputBox</param>
+        /// <param name="password">Occulta l'inserimento di una password</param>
+        public InputBox(string caption, string message, InputBoxImage image, bool password = false)
+        {
+            InitializeComponent();
+
+            //Attributo per l'immagine dell'InputBox
+            Image imageToShow = null;
+
+            //Assegna l'immagine selezionata
+            switch (image)
+            {
+                case InputBoxImage.Message:
+                    imageToShow = Properties.Resources.message;
+                    break;
+                case InputBoxImage.Question:
+                    imageToShow = Properties.Resources.question;
+                    break;
+                case InputBoxImage.Secret:
+                    imageToShow = Properties.Resources.secret;
+                    break;
+            }
+
+            //Assegna l'immagine alla PictureBox
+            imageBox.Image = imageToShow;
+            //Assegna il testo alla caption dell'InputBox
+            Text = caption;
+            //Assegna il messaggio dell'InputBox
+            lblMesssage.Text = message;
+            //Setta il password char della TextBox in caso di inserimento della password
+            if (password) txtQuestion.PasswordChar = true;
+        }
+
+        #endregion
+
+        #region Metodi statici pubblici
+
+        /// <summary>
+        /// Metodo per la visualizzazione del Cusotm InputBox
+        /// </summary>
+        /// <param name="caption">Intestazione dell'InputBox</param>
+        /// <param name="message">Messaggio dell'InputBox</param>
+        /// <param name="password">Occulta l'inserimento di una password</param>
+        /// <returns>Ritorna il risultato di selezione del Dialog</returns>
+        public static DialogResult ShowDialog(string caption, string message, bool password = false)
+        {
+            //Istanza alla classe InputBox
+            InputBox inputBox = new InputBox();
+            //Assegna il testo alla caption dell'InputBox
+            inputBox.Text = caption;
+            //Assegna il messaggio dell'InputBox
+            inputBox.lblMesssage.Text = message;
+            //Setta il password char della TextBox in caso di inserimento della password
+            if (password) inputBox.txtQuestion.PasswordChar = true;
+            //Visualizza l'InputBox
+            DialogResult result = inputBox.ShowDialog();
+            //Restituisce il risultato del Dialog
+            return result;
+        }
+
+        /// <summary>
+        /// Metodo per la visualizzazione del Cusotm InputBox
+        /// </summary>
+        /// <param name="caption">Intestazione dell'InputBox</param>
+        /// <param name="message">Messaggio dell'InputBox</param>
+        /// <param name="image">Icona dell'InputBox</param>
+        /// <param name="password">Occulta l'inserimento di una password</param>
+        /// <returns>Ritorna il risultato di selezione del Dialog</returns>
+        public static DialogResult ShowDialog(string caption, string message, InputBoxImage image, bool password = false)
+        {
+            //Istanza alla classe InputBox
+            InputBox inputBox = new InputBox();
+            //Attributo per l'immagine dell'InputBox
+            Image imageToShow = null;
+
+            //Assegna l'immagine selezionata
+            switch (image)
+            {
+                case InputBoxImage.Message:
+                    imageToShow = Properties.Resources.message;
+                    break;
+                case InputBoxImage.Question:
+                    imageToShow = Properties.Resources.question;
+                    break;
+                case InputBoxImage.Secret:
+                    imageToShow = Properties.Resources.secret;
+                    break;
+            }
+
+            //Assegna l'immagine alla PictureBox
+            inputBox.imageBox.Image = imageToShow;
+            //Assegna il testo alla caption dell'InputBox
+            inputBox.Text = caption;
+            //Assegna il messaggio dell'InputBox
+            inputBox.lblMesssage.Text = message;
+            //Setta il password char della TextBox in caso di inserimento della password
+            if (password) inputBox.txtQuestion.PasswordChar = true;
+            //Visualizza l'InputBox
+            DialogResult result = inputBox.ShowDialog();
+            //Restituisce il risultato del Dialog
+            return result;
+        }
+
+        #endregion
+
+        #region Button
+
+        /// <summary>
+        /// Metodo invocato all'accettazione dell'inputBox
+        /// </summary>
+        /// <param name="sender">Object</param>
+        /// <param name="e">Event</param>
+        private void btnOk_Click(object sender, EventArgs e)
+        {
+            //Ricava la risposta dalla TextBox valorizza il Setter privato
+            Answer = txtQuestion.Texts;
+            //Ricava la risposta dalla TextBox valorizza il Setter statico privato
+            AnswerResult = txtQuestion.Texts;
+            //Chiude l'InputBox
+            Dispose();
+        }
+
+        /// <summary>
+        /// Metodo per la chiusura del Form
+        /// </summary>
+        /// <param name="sender">Object</param>
+        /// <param name="e">Event</param>
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            //Chiude il form
+            Dispose();
+        }
+
+        #endregion
+    }
+}
