@@ -30,11 +30,6 @@ namespace InputBox
         #region Getter and Setter
 
         /// <summary>
-        /// Getter con la risposta dell'InputBox
-        /// </summary>
-        public string Answer { get; private set; }
-
-        /// <summary>
         /// Getter statico con la risposta dell'InputBox
         /// visualizzaziondo il dialog attraverso il metodo statico ShowDialog
         /// </summary>
